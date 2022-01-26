@@ -4,9 +4,9 @@
   <div class="home">
     <!-- <button @click.prevent="startScene">Start</button> -->
     <THREE />
-    <Hero />
-    <WorkA />
-    <WorkB />
+    <!-- <Hero /> -->
+    <!-- <WorkA /> -->
+    <!-- <WorkB /> -->
 
     
   </div>
