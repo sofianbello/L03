@@ -70,7 +70,7 @@ export default {
     addGeometry() {
       // create plane geometry and material
       const planeGeometry = new THREE.PlaneGeometry(60, 20);
-      const planeMaterial = new THREE.MeshLambertMaterial({ color: 0xaaaaaa });
+      const planeMaterial = new THREE.MeshLambertMaterial({ color: 'cyan' });
       this.plane = new THREE.Mesh(planeGeometry, planeMaterial);
       this.plane.rotation.x = -0.5 * Math.PI;
       this.plane.position.set(15, 0, 0);
@@ -79,7 +79,7 @@ export default {
       // create cube geometry and material
       const cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
       const cubeMaterial = new THREE.MeshLambertMaterial({
-        color: 0xff0000,
+        color: 'magenta',
         wireframe: false
       });
       this.cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
@@ -89,7 +89,7 @@ export default {
       // create sphere geometry and material
       const sphereGeometry = new THREE.SphereGeometry(4, 20, 20);
       const sphereMaterial = new THREE.MeshLambertMaterial({
-        color: 0x7777ff,
+        color: 'yellow',
         wireframe: false
       });
       this.sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
