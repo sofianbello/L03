@@ -49,17 +49,19 @@ export default {
       // this.renderer.shadowMapSoft = true;
       // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-      this.container.appendChild( this.renderer.domElement );
-
+      // WindowListener
+      window.addEventListener( 'resize', this.onWindowResize );
       document.addEventListener('mousemove', this.onDocumentMouseMove)
+
       this.addSphere()
-      // this.render();
-      // this.animate()
+      this.addLights()
+      this.render()
+      this.onWindowResize()
     },
     addSphere(){
       
       this.geometry = new THREE.SphereGeometry( 3, 32, 16 );
-      this.material = new THREE.MeshLambertMaterial( { color: 0x00ffff } );
+      this.material = new THREE.MeshStandardMaterial( { color: 0x00ffff } );
 
       this.mesh = new THREE.Mesh( this.geometry, this.material );
       this.mesh.position.x =  1;
@@ -68,28 +70,31 @@ export default {
 
       this.scene.add( this.mesh );
 
-      this.light1 = new THREE.PointLight(0xff0000, 1)
-      this.light1.position.set(1,1,1)
-      this.scene.add(this.light1)
-      // WindowListener
-      window.addEventListener( 'resize', this.onWindowResize );
-      this.renderer.render( this.scene, this.camera );
-      }
     },
-    animate() {
-      requestAnimationFrame( this.animate );
+    addLights(){
+      this.light1 = new THREE.PointLight(0xff0000, 20)
+      this.light1.position.set(10,1,-1)
+      this.scene.add(this.light1)
+
+    },
+    render(){
+      this.renderer.render( this.scene, this.camera );
+      
     },
     onWindowResize() {
       
-      this.sizeX = window.innerWidth / 2;
-				this.sizeY = window.innerHeight / 2;
+      this.sizeX = window.innerWidth/2
+			this.sizeY = window.innerHeight/2
 
-				this.camera.aspect = window.innerWidth / window.innerHeight;
-				this.camera.updateProjectionMatrix();
+			this.camera.aspect = window.innerWidth / window.innerHeight;
+			this.camera.updateProjectionMatrix();
 
-				this.renderer.setSize( window.innerWidth, window.innerHeight );
+			this.renderer.setSize( window.innerWidth, window.innerHeight );
+      this.render()
 
 			},
+
+  },
     
 
   };
