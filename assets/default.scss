@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Pathway+Gothic+One&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Pathway Gothic One', sans-serif;
+    scroll-behavior: smooth;
+  }
+body {
+  background-color: rgb(27, 27, 27);
+  // background-image: url('https://images.unsplash.com/photo-1524439188326-e47322d1cef2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80');
+  // &::after {
+  //   content: '';
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   height: 200%;
+  //   width: 100%;
+  //   background-color: rgba(0, 0, 0, 0.8);
+  // }
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+// .example {
+//   scrollbar-width: none;
+// }
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
