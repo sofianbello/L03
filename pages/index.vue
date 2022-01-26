@@ -3,7 +3,7 @@
   components: { THREE },Main Content Wraper -->
   <div class="home">
     <!-- <button @click.prevent="startScene">Start</button> -->
-    <THREE />
+    <THREE class="threejs"/>
     <Hero />
     <WorkA />
     <WorkB />
@@ -16,5 +16,8 @@
 
 
 <style lang="scss" scoped>
-
+.threejs{
+  position: relative;
+  z-index: 2;
+}
 </style>
