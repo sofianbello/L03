@@ -86,7 +86,7 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
       const heightMap = this.loader.load('./custom/height2.jpg');
       const normalTx = this.loader.load('./custom/NormalMap.png');
       const material = new THREE.MeshStandardMaterial({
-        color: 0x00ff00,
+        color: 0xffffff,
         metalness: 0.7,
         roughness: 0.2,
         normalMap: normalTx,
@@ -101,14 +101,20 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
       this.light1 = new THREE.PointLight(0xffffff, 50.1)
       this.light1.position.set(200,3,40)
       this.light2 = new THREE.PointLight(0xff0000, 20)
-      this.light2.position.set(100,1,50)
+      this.light2.position.set(100,1,-100)
       this.scene.add(this.light1, this.light2)
-      this.debug.add(this.light1.position, 'x', 50)
-      this.debug.add(this.light1.position, 'y', 50)
-      this.debug.add(this.light1.position, 'z', 50)
-      this.debug.add(this.light2.position, 'x', 50)
-      this.debug.add(this.light2.position, 'y', 50)
-      this.debug.add(this.light2.position, 'z', 50)
+      const debugLight1 = this.debug.addFolder('Light1')
+      const debugLight2 = this.debug.addFolder('Light2')
+      debugLight1.add(this.light1.position, 'x').name('Position X')
+      debugLight1.add(this.light1.position, 'y').name('Position Y')
+      debugLight1.add(this.light1.position, 'z').name('Position Z')
+      debugLight1.add(this.light1, 'intensity').name('Intensity')
+      debugLight1.addColor(this.light1, 'color').name('Color')
+      debugLight2.add(this.light2.position, 'x').name('Position X')
+      debugLight2.add(this.light2.position, 'y').name('Position Y')
+      debugLight2.add(this.light2.position, 'z').name('Position Z')
+      debugLight2.add(this.light2, 'intensity').name('Intensity')
+      debugLight2.addColor(this.light2, 'color').name('Color')
 
     },
     onDocumentMouseMove( event ) {
