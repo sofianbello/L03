@@ -18,6 +18,7 @@ body {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.8);
   }
+  scrollbar-width: none;
 
 }
 
@@ -25,7 +26,6 @@ body::-webkit-scrollbar {
   display: none;
 }
 // .example {
-//   scrollbar-width: none;
 // }
 
 canvas {
