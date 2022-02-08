@@ -53,7 +53,7 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
 
       // Setup Debug Ui
       this.debug = new GUI()
-      this.debug.add(document, 'title')
+      this.debug.open(false)
 
       // Camera Settings
       this.camera = new THREE.PerspectiveCamera(
@@ -82,7 +82,7 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
 
     objects(){
       this.loader = new THREE.TextureLoader()
-      const geometry = new THREE.BoxGeometry(30,30,30);
+      const geometry = new THREE.BoxGeometry(20,20,20);
       const heightMap = this.loader.load('./custom/height2.jpg');
       const normalTx = this.loader.load('./custom/NormalMap.png');
       const material = new THREE.MeshStandardMaterial({
@@ -94,17 +94,21 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
       // const texture = this.loader.load()
 
       this.mesh = new THREE.Mesh(geometry,material)
+      const object1 = this.debug.addFolder('Object 1')
+      object1.add(this.mesh.position, 'x').name('Position X')
+      object1.add(this.mesh.position, 'y').name('Position Y')
+      object1.add(this.mesh.position, 'z').name('Position Z')
       this.scene.add(this.mesh)
 
     },
     lights(){
-      this.light1 = new THREE.PointLight(0xffffff, 50.1)
+      this.light1 = new THREE.PointLight(0xffffff, 1)
       this.light1.position.set(200,3,40)
-      this.light2 = new THREE.PointLight(0xff0000, 20)
+      this.light2 = new THREE.PointLight(0xa2744e, 1)
       this.light2.position.set(100,1,-100)
       this.scene.add(this.light1, this.light2)
-      const debugLight1 = this.debug.addFolder('Light1')
-      const debugLight2 = this.debug.addFolder('Light2')
+      const debugLight1 = this.debug.addFolder('Light 1')
+      const debugLight2 = this.debug.addFolder('Light 2')
       debugLight1.add(this.light1.position, 'x').name('Position X')
       debugLight1.add(this.light1.position, 'y').name('Position Y')
       debugLight1.add(this.light1.position, 'z').name('Position Z')
