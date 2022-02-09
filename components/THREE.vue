@@ -107,9 +107,9 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
 
     objects(){
       
-      const BoxSize = { x: 20, y: 20, z: 20}
+      const BoxSize = { x: 10, y: 10, z: 10}
       this.loader = new THREE.TextureLoader()
-      const geometry = new THREE.PlaneGeometry(BoxSize.x,BoxSize.y)
+      const geometry = new THREE.BoxBufferGeometry(BoxSize.x,BoxSize.y,BoxSize.z)
       const heightMap = this.loader.load('./custom/height2.jpg');
       const normalTx = this.loader.load('./custom/NormalMap.png');
       const material = new THREE.MeshStandardMaterial({
@@ -125,6 +125,7 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
 
         vertexShader: vertex,
         fragmentShader: fragment,
+        wireframe: true,
         })
       // const texture = this.loader.load()
 
