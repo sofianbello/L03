@@ -5,7 +5,6 @@
 
 <script>
 import * as THREE from "three-full";
-import { GLTFLoader } from 'three-full';
 import GUI from 'lil-gui';
 
 
@@ -13,15 +12,21 @@ export default {
   components: {},
   data() {
     return {
-      // Set  "this." Variables
-      // Strictly necessary
+
+      /** 
+       * Set  "this." Variables
+       * Strictly necessary
+      */
       container: undefined,
       scene: undefined,
       textureCube: undefined,
       camera: undefined,
       renderer: undefined,
 
-      // (Optional just for quality of life)
+      /** 
+       * Optional just for quality of life
+      */
+
       debug: undefined,
       mesh: undefined,
       sizeX: undefined,
@@ -38,24 +43,39 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
   },
   methods: {
     setup() {
-      // Assign Variables
+      /** 
+       * Assign Variables
+      */
+
       this.sizeX = window.innerHeight/2;
       this.sizeY = window.innerHeight/2;
       this.mouseX = 0;
       this.mouseY = 0;
 
-      // WindowListener
+      /**
+       * Event Listeners
+      */
+
       document.addEventListener('mousemove', this.onDocumentMouseMove)
 
-      // Setup Scene
+      /** 
+       * Scene
+      */ 
+
       this.container = document.getElementById( 'three' );
       this.scene = new THREE.Scene();
 
-      // Setup Debug Ui
+      /**
+       * Debug
+       */
+
       this.debug = new GUI()
       this.debug.open(false)
 
-      // Camera Settings
+      /**
+       * Camera
+       */
+
       this.camera = new THREE.PerspectiveCamera(
         75,
         window.innerWidth / window.innerHeight,
@@ -64,7 +84,10 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
       );
       this.camera.position.z = -40;
 
-      // Renderer Settings
+      /**
+       * Renderer
+       */
+
       this.renderer = new THREE.WebGLRenderer({alpha: true}); // For Transperancy add: { alpha: true }
       // this.renderer.setClearColor(new THREE.Color(0x151515)); // Set Canvas BG-Color
       this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -73,32 +96,40 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
       // this.renderer.shadowMapSoft = true;
       // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-      // Load additional Functions
+      /**
+       * Generate Objects
+       */
+
       this.objects();
-      this.lights();
-      this.render();
-      this.animate();
     },
 
     objects(){
+
       this.loader = new THREE.TextureLoader()
-      const geometry = new THREE.OctahedronGeometry(10.0,0);
+      const geometry = new THREE.PlaneGeometry(50,50);
       const heightMap = this.loader.load('./custom/height2.jpg');
       const normalTx = this.loader.load('./custom/NormalMap.png');
-      const material = new THREE.MeshStandardMaterial({
-        color: 0xffffff,
-        metalness: 0.7,
-        roughness: 0.6,
-        normalMap: normalTx,
+      const material = new THREE.ShaderMaterial({
+        uniforms: {
+          time: { type: 'f', value: 1.0},
+          resolution: {type: 'v2', value: new THREE.Vector2(window.innerWidth, window.innerHeight)
+                        .multiplyScalar(window.devicePixelRatio)}
+        }
         })
       // const texture = this.loader.load()
 
       this.mesh = new THREE.Mesh(geometry,material)
+      this.mesh.rotation.x = 3
       const object1 = this.debug.addFolder('Object 1')
       object1.add(this.mesh.position, 'x').name('Position X')
       object1.add(this.mesh.position, 'y').name('Position Y')
       object1.add(this.mesh.position, 'z').name('Position Z')
+      object1.add(this.mesh.rotation, 'x').name('Rotation X')
+      object1.add(this.mesh.rotation, 'y').name('Rotation Y')
+      object1.add(this.mesh.rotation, 'z').name('Rotation Z')
       this.scene.add(this.mesh)
+
+      this.lights()
 
     },
     lights(){
@@ -120,6 +151,7 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
       debugLight2.add(this.light2, 'intensity').name('Intensity')
       debugLight2.addColor(this.light2, 'color').name('Color')
 
+      this.animate()
     },
     onDocumentMouseMove( event ) {
 
@@ -142,8 +174,8 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
       animate(){
         requestAnimationFrame( this.animate );
         const timer = 0.0001 * Date.now();
-        this.mesh.rotation.x = 5 * Math.cos( timer );
-        this.mesh.rotation.y = 5 * Math.sin( timer * 1.1 );
+        // this.mesh.rotation.x = 5 * Math.cos( timer );
+        // this.mesh.rotation.y = 5 * Math.sin( timer * 1.1 );
         this.camera.position.x += ( this.mouseX - this.camera.position.x ) * .05;
         this.camera.position.y += ( - this.mouseY - this.camera.position.y ) * .05;
         this.camera.lookAt( this.scene.position );
