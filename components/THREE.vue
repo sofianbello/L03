@@ -6,6 +6,8 @@
 <script>
 import * as THREE from "three-full";
 import GUI from 'lil-gui';
+import vertex from '../static/shader/vertex.glsl'
+import fragment from '../static/shader/fragment.glsl'
 
 
 export default {
@@ -104,21 +106,29 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
     },
 
     objects(){
-
+      
+      const BoxSize = { x: 20, y: 20, z: 20}
       this.loader = new THREE.TextureLoader()
-      const geometry = new THREE.PlaneGeometry(50,50);
+      const geometry = new THREE.PlaneGeometry(BoxSize.x,BoxSize.y)
       const heightMap = this.loader.load('./custom/height2.jpg');
       const normalTx = this.loader.load('./custom/NormalMap.png');
-      const material = new THREE.ShaderMaterial({
+      const material = new THREE.MeshStandardMaterial({
+        color: 0xff00ff,
+        normalTx,
+      })
+      const shader = new THREE.ShaderMaterial({
         uniforms: {
           time: { type: 'f', value: 1.0},
           resolution: {type: 'v2', value: new THREE.Vector2(window.innerWidth, window.innerHeight)
                         .multiplyScalar(window.devicePixelRatio)}
-        }
+        },
+
+        vertexShader: vertex,
+        fragmentShader: fragment,
         })
       // const texture = this.loader.load()
 
-      this.mesh = new THREE.Mesh(geometry,material)
+      this.mesh = new THREE.Mesh(geometry,shader)
       this.mesh.rotation.x = 3
       const object1 = this.debug.addFolder('Object 1')
       object1.add(this.mesh.position, 'x').name('Position X')
