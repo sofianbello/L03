@@ -82,13 +82,13 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
 
     objects(){
       this.loader = new THREE.TextureLoader()
-      const geometry = new THREE.BoxGeometry(20,20,20);
+      const geometry = new THREE.OctahedronGeometry(10.0,0);
       const heightMap = this.loader.load('./custom/height2.jpg');
       const normalTx = this.loader.load('./custom/NormalMap.png');
       const material = new THREE.MeshStandardMaterial({
         color: 0xffffff,
         metalness: 0.7,
-        roughness: 0.2,
+        roughness: 0.6,
         normalMap: normalTx,
         })
       // const texture = this.loader.load()
