@@ -24,6 +24,7 @@ export default {
       textureCube: undefined,
       camera: undefined,
       renderer: undefined,
+      uniforms: undefined,
 
       /** 
        * Optional just for quality of life
@@ -90,7 +91,7 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
        * Renderer
        */
 
-      this.renderer = new THREE.WebGLRenderer({alpha: true}); // For Transperancy add: { alpha: true }
+      this.renderer = new THREE.WebGLRenderer({alpha: false}); // For Transperancy add: { alpha: true }
       // this.renderer.setClearColor(new THREE.Color(0x151515)); // Set Canvas BG-Color
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.renderer.setPixelRatio(window.devicePixelRatio)
@@ -106,27 +107,38 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
     },
 
     objects(){
+      this.loader = new THREE.TextureLoader()
       
       const BoxSize = { x: 10, y: 10, z: 10}
-      this.loader = new THREE.TextureLoader()
-      const geometry = new THREE.BoxBufferGeometry(BoxSize.x,BoxSize.y,BoxSize.z)
+      const imgTx = this.loader.load('./textures/grass/grasslight-big.jpg');
+      const normalTx = this.loader.load('./textures/grass/grasslight-big-nm.jpg');
       const heightMap = this.loader.load('./custom/height2.jpg');
-      const normalTx = this.loader.load('./custom/NormalMap.png');
+      
+      this.uniforms = {
+        time: { type: 'f', value: 0.0},
+        mouse: {type: 'v2', value: new THREE.Vector2(0.0, 0.0)},
+        resolution: {type: 'v2', value: new THREE.Vector2(window.innerWidth, window.innerHeight)
+                        .multiplyScalar(window.devicePixelRatio)},
+        image: {type: 't', value: imgTx},
+
+      }
+//    #1 
+      const geometry = new THREE.PlaneGeometry(BoxSize.x,BoxSize.y)
       const material = new THREE.MeshStandardMaterial({
         color: 0xff00ff,
-        normalTx,
       })
-      const shader = new THREE.ShaderMaterial({
-        uniforms: {
-          time: { type: 'f', value: 1.0},
-          resolution: {type: 'v2', value: new THREE.Vector2(window.innerWidth, window.innerHeight)
-                        .multiplyScalar(window.devicePixelRatio)}
-        },
 
+      
+      const shader = new THREE.ShaderMaterial({
+        uniforms: this.uniforms,
         vertexShader: vertex,
         fragmentShader: fragment,
-        wireframe: true,
+        wireframe: false,
         })
+
+      window.addEventListener('mousemove', function(e) {
+        shader.uniforms.mouse.value.set(e.screenX / window.innerWidth, 1 - e.screenY / window.innerHeight)
+      })
       // const texture = this.loader.load()
 
       this.mesh = new THREE.Mesh(geometry,shader)
@@ -166,8 +178,8 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
     },
     onDocumentMouseMove( event ) {
 
-				this.mouseX = ( event.clientX - this.sizeX ) / 100;
-				this.mouseY = ( event.clientY - this.sizeY ) / 100;
+				this.mouseX = ( event.clientX - this.sizeX ) / 5;
+				this.mouseY = 1 - ( event.clientY - this.sizeY ) / 5;
 
     },
     onWindowResize() {
@@ -184,12 +196,16 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
 			},
       animate(){
         requestAnimationFrame( this.animate );
-        const timer = 0.0001 * Date.now();
+        const clock = new THREE.Clock()
+        clock.running = true;
+        this.uniforms.time.value = clock.getElapsedTime();
+        // const timer = 0.0001 * Date.now();
         // this.mesh.rotation.x = 5 * Math.cos( timer );
         // this.mesh.rotation.y = 5 * Math.sin( timer * 1.1 );
         this.camera.position.x += ( this.mouseX - this.camera.position.x ) * .05;
         this.camera.position.y += ( - this.mouseY - this.camera.position.y ) * .05;
         this.camera.lookAt( this.scene.position );
+        console.log(clock.getElapsedTime());
 				this.render();
       },
       render(){
