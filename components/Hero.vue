@@ -1,5 +1,5 @@
 <template>
-  <div class="hero">
+  <div class="hero"> 
     <div class="avatar">
       <div class="avatar-cyan"></div>
       <div class="avatar-yello"></div>

@@ -109,8 +109,8 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
     objects(){
       this.loader = new THREE.TextureLoader()
       
-      const BoxSize = { x: 10, y: 10, z: 10}
-      const imgTx = this.loader.load('./textures/grass/grasslight-big.jpg');
+      const BoxSize = { x: this.sizeX*0.25, y: this.sizeY*0.25, z: 10}
+      const imgTx = this.loader.load('./textures/Bello_crop.jpg');
       const normalTx = this.loader.load('./textures/grass/grasslight-big-nm.jpg');
       const heightMap = this.loader.load('./custom/height2.jpg');
       
@@ -142,6 +142,8 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
       // const texture = this.loader.load()
 
       this.mesh = new THREE.Mesh(geometry,shader)
+      this.mesh.position.y = 30
+      this.mesh.position.x = -60
       this.mesh.rotation.x = 3
       const object1 = this.debug.addFolder('Object 1')
       object1.add(this.mesh.position, 'x').name('Position X')
@@ -178,8 +180,8 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
     },
     onDocumentMouseMove( event ) {
 
-				this.mouseX = ( event.clientX - this.sizeX ) / 5;
-				this.mouseY = 1 - ( event.clientY - this.sizeY ) / 5;
+				this.mouseX = ( event.clientX - this.sizeX ) / 100;
+				this.mouseY = 1 - ( event.clientY - this.sizeY ) / 100;
 
     },
     onWindowResize() {
