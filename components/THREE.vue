@@ -123,9 +123,13 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
 
       }
 //    #1 
-      const geometry = new THREE.PlaneGeometry(BoxSize.x,BoxSize.y)
-      const material = new THREE.MeshStandardMaterial({
+      const geometry = new THREE.BoxBufferGeometry(BoxSize.x*0.25,BoxSize.y*0.25, BoxSize.z*0.125)
+      // const geometry = new THREE.PlaneGeometry(BoxSize.x*0.25,BoxSize.y*0.25)
+      const materialM = new THREE.MeshStandardMaterial({
         color: 0xff00ff,
+      })
+      const materialC = new THREE.MeshStandardMaterial({
+        color: 0xffff00,
       })
 
       
@@ -139,12 +143,20 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
       window.addEventListener('mousemove', function(e) {
         shader.uniforms.mouse.value.set(e.screenX / window.innerWidth, 1 - e.screenY / window.innerHeight)
       })
-      // const texture = this.loader.load()
+
+      const yellow = new THREE.Mesh(geometry,materialC)
+      const magenta = new THREE.Mesh(geometry,materialM)
 
       this.mesh = new THREE.Mesh(geometry,shader)
-      this.mesh.position.y = 30
-      this.mesh.position.x = -60
-      this.mesh.rotation.x = 3
+      this.mesh.position.y = 10
+      this.mesh.position.x = 1
+      this.mesh.rotation.x = 3.15
+      this.mesh.rotation.z = 3.05
+
+      yellow.position.x += this.mesh.position.x;
+      yellow.position.y += this.mesh.position.y+5;
+      yellow.position.z += this.mesh.position.z+3;
+      magenta.position.z += this.mesh.position.z+2;
       const object1 = this.debug.addFolder('Object 1')
       object1.add(this.mesh.position, 'x').name('Position X')
       object1.add(this.mesh.position, 'y').name('Position Y')
@@ -153,6 +165,8 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
       object1.add(this.mesh.rotation, 'y').name('Rotation Y')
       object1.add(this.mesh.rotation, 'z').name('Rotation Z')
       this.scene.add(this.mesh)
+      this.scene.add(yellow)
+      this.scene.add(magenta)
 
       this.lights()
 
@@ -179,8 +193,8 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
       this.animate()
     },
     onDocumentMouseMove( event ) {
-
-				this.mouseX = ( event.clientX - this.sizeX ) / 100;
+      
+      this.mouseX = ( event.clientX - this.sizeX ) / 100;
 				this.mouseY = 1 - ( event.clientY - this.sizeY ) / 100;
 
     },
@@ -207,9 +221,7 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
         this.camera.position.x += ( this.mouseX - this.camera.position.x ) * .05;
         this.camera.position.y += ( - this.mouseY - this.camera.position.y ) * .05;
         this.camera.lookAt( this.scene.position );
-        console.log(clock.getElapsedTime());
-				this.render();
-      },
+				this.render();      },
       render(){
 
 
