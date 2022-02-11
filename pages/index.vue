@@ -4,7 +4,7 @@
   <div class="home">
     <!-- <button @click.prevent="startScene">Start</button> -->
     <THREE class="threejs"/>
-    <!-- <Hero /> -->
+    <Hero />
     <!-- <WorkA /> -->
     <!-- <WorkB /> -->
 

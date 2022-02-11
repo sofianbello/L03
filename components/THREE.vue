@@ -40,7 +40,7 @@ export default {
       orbitControls: undefined,
     };
   },
-mounted() {      //Initial Function (Will be executed immeadiatly on page load)
+  mounted() {      //Initial Function (Will be executed immeadiatly on page load)
     this.setup(); // Setup Environment
     this.$refs.threeElement.appendChild(this.renderer.domElement);
   },
@@ -50,7 +50,7 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
        * Assign Variables
       */
 
-      this.sizeX = window.innerHeight/2;
+      this.sizeX = window.innerWidth/2;
       this.sizeY = window.innerHeight/2;
       this.mouseX = 0;
       this.mouseY = 0;
@@ -73,25 +73,26 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
        */
 
       this.debug = new GUI()
-      this.debug.open(false)
+      this.debug.open(true)
 
       /**
        * Camera
        */
 
       this.camera = new THREE.PerspectiveCamera(
-        75,
+        45,
         window.innerWidth / window.innerHeight,
         0.1,
         1000
       );
-      this.camera.position.z = -40;
-
+      this.camera.position.z = 100;
+      const cameraGUI = this.debug.addFolder('Camera')
+      cameraGUI.add(this.camera.position, 'z').name('Position Z')
       /**
        * Renderer
        */
 
-      this.renderer = new THREE.WebGLRenderer({alpha: false}); // For Transperancy add: { alpha: true }
+      this.renderer = new THREE.WebGLRenderer({alpha: true}); // For Transperancy add: { alpha: true }
       // this.renderer.setClearColor(new THREE.Color(0x151515)); // Set Canvas BG-Color
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.renderer.setPixelRatio(window.devicePixelRatio)
@@ -109,8 +110,8 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
     objects(){
       this.loader = new THREE.TextureLoader()
       
-      const BoxSize = { x: this.sizeX*0.25, y: this.sizeY*0.25, z: 10}
-      const imgTx = this.loader.load('./textures/Bello_crop.jpg');
+      const geoSize = { x: this.sizeX, y: this.sizeX, z: 10}
+      const imgTx = this.loader.load('./textures/grass/grasslight-big.jpg');
       const normalTx = this.loader.load('./textures/grass/grasslight-big-nm.jpg');
       const heightMap = this.loader.load('./custom/height2.jpg');
       
@@ -123,8 +124,8 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
 
       }
 //    #1 
-      const geometry = new THREE.BoxBufferGeometry(BoxSize.x*0.25,BoxSize.y*0.25, BoxSize.z*0.125)
-      // const geometry = new THREE.PlaneGeometry(BoxSize.x*0.25,BoxSize.y*0.25)
+      const geometry = new THREE.BoxBufferGeometry(geoSize.x*0.5,geoSize.y*0.5, geoSize.z*0.15)
+      // const geometry = new THREE.PlaneGeometry(geoSize.x*0.25,geoSize.y*0.25)
       const materialM = new THREE.MeshStandardMaterial({
         color: 0xff00ff,
       })
@@ -148,34 +149,38 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
       const magenta = new THREE.Mesh(geometry,materialM)
 
       this.mesh = new THREE.Mesh(geometry,shader)
-      this.mesh.position.y = 10
       this.mesh.position.x = 1
-      this.mesh.rotation.x = 3.15
-      this.mesh.rotation.z = 3.05
+      this.mesh.position.y = 1
+      this.mesh.position.z = -150
+      this.mesh.rotation.x = 0
+      this.mesh.rotation.z = 0
 
-      yellow.position.x += this.mesh.position.x;
-      yellow.position.y += this.mesh.position.y+5;
-      yellow.position.z += this.mesh.position.z+3;
-      magenta.position.z += this.mesh.position.z+2;
+      yellow.position.x += this.mesh.position.x+1;
+      yellow.position.y += this.mesh.position.y+4;
+      yellow.position.z += this.mesh.position.z-3;
+      magenta.position.x += this.mesh.position.x-2;
+      magenta.position.y += this.mesh.position.y-2;
+      magenta.position.z += this.mesh.position.z-2;
+      yellow.rotation.z += this.mesh.rotation.z;
+      magenta.rotation.z += this.mesh.rotation.z+0.01;
       const object1 = this.debug.addFolder('Object 1')
       object1.add(this.mesh.position, 'x').name('Position X')
       object1.add(this.mesh.position, 'y').name('Position Y')
       object1.add(this.mesh.position, 'z').name('Position Z')
-      object1.add(this.mesh.rotation, 'x').name('Rotation X')
-      object1.add(this.mesh.rotation, 'y').name('Rotation Y')
-      object1.add(this.mesh.rotation, 'z').name('Rotation Z')
+      object1.add(this.mesh.rotation, 'x').name('Rotation X').step('0.01').min(-Math.PI).max(Math.PI)
+      object1.add(this.mesh.rotation, 'y').name('Rotation Y').step('0.01').min(-Math.PI).max(Math.PI)
+      object1.add(this.mesh.rotation, 'z').name('Rotation Z').step('0.01').min(-Math.PI).max(Math.PI)
+      object1.open(true)
       this.scene.add(this.mesh)
-      this.scene.add(yellow)
-      this.scene.add(magenta)
-
+      // this.scene.add(yellow, magenta)
       this.lights()
 
     },
     lights(){
-      this.light1 = new THREE.PointLight(0xffffff, 1)
-      this.light1.position.set(200,3,40)
-      this.light2 = new THREE.PointLight(0xa2744e, 1)
-      this.light2.position.set(100,1,-100)
+      this.light1 = new THREE.PointLight(0xffffff, -1)
+      this.light1.position.set(200,3,0)
+      this.light2 = new THREE.PointLight(0xa2744e, 15)
+      this.light2.position.set(100,1,150)
       this.scene.add(this.light1, this.light2)
       const debugLight1 = this.debug.addFolder('Light 1')
       const debugLight2 = this.debug.addFolder('Light 2')
@@ -184,11 +189,13 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
       debugLight1.add(this.light1.position, 'z').name('Position Z')
       debugLight1.add(this.light1, 'intensity').name('Intensity')
       debugLight1.addColor(this.light1, 'color').name('Color')
+      debugLight1.open(false)
       debugLight2.add(this.light2.position, 'x').name('Position X')
       debugLight2.add(this.light2.position, 'y').name('Position Y')
       debugLight2.add(this.light2.position, 'z').name('Position Z')
       debugLight2.add(this.light2, 'intensity').name('Intensity')
       debugLight2.addColor(this.light2, 'color').name('Color')
+      debugLight2.open(false)
 
       this.animate()
     },
@@ -218,8 +225,8 @@ mounted() {      //Initial Function (Will be executed immeadiatly on page load)
         // const timer = 0.0001 * Date.now();
         // this.mesh.rotation.x = 5 * Math.cos( timer );
         // this.mesh.rotation.y = 5 * Math.sin( timer * 1.1 );
-        this.camera.position.x += ( this.mouseX - this.camera.position.x ) * .05;
-        this.camera.position.y += ( - this.mouseY - this.camera.position.y ) * .05;
+        // this.camera.position.x += ( this.mouseX - this.camera.position.x ) * .05;
+        // this.camera.position.y += ( - this.mouseY - this.camera.position.y ) * .05;
         this.camera.lookAt( this.scene.position );
 				this.render();      },
       render(){
