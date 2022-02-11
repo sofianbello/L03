@@ -1,10 +1,10 @@
 <template>
   <div class="hero"> 
     <div class="avatar">
-      <div class="avatar-cyan"></div>
-      <div class="avatar-yello"></div>
-      <div class="avatar-magenta"></div>
-      <img src="../assets/img/Bello_crop.jpg" alt="">
+      <!-- <div class="avatar-cyan"></div> -->
+      <!-- <div class="avatar-yello"></div> -->
+      <!-- <div class="avatar-magenta"></div> -->
+      <!-- <img src="../assets/img/Bello_crop.jpg" alt=""> -->
     </div>
     <Title />
     <!-- <img src="https://images.unsplash.com/photo-1524439188326-e47322d1cef2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" alt=""> -->

@@ -1,7 +1,7 @@
 <template>
   <div class="title-wrapper">
       <div >
-        <h1 class="title">WHAT IS DESIGN BY BELLO</h1>
+        <h1 class="title">PURPLE HAZE</h1>
         <p class="description">
           We exist to vanquish design mediocracy and prepare brands for upcoming new trends in a ever evolving space.
           We offer independent and creative solutionsfor every need, get in touch to get amazing.
@@ -46,7 +46,7 @@ export default {
       text-transform: uppercase;
       color: hsl(0, 0%, 100%);
       margin-bottom: 5vh;
-      margin-left: 65vh;
+      margin-left: 65vw;
       @media (min-width: 750px) {
         font-size: 2rem;
     }
@@ -54,13 +54,14 @@ export default {
     
     }
     h1 {
-      color: #fff;
+      color: rgb(255, 0, 234);
       font-size: 5rem;
       font-weight: 800;
       margin-bottom: 8px;
       @media (min-width: 750px) {
         font-size: 12rem;
       }
+      
       span {
         font-weight: 200;
       }
