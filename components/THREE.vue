@@ -6,7 +6,7 @@
 <script>
 import * as THREE from "three-full";
 import GUI from 'lil-gui'
-// import UIL from 'uil'
+import { AsciiEffect } from "three-full"
 
 export default {
   components: {},
@@ -15,6 +15,7 @@ export default {
       scene: undefined,
       camera: undefined,
       renderer: undefined,
+      effect: undefined,
       stats: undefined,
       plane: undefined,
       cube: undefined,
@@ -33,7 +34,8 @@ export default {
     this.positionCamera();
     this.setupClock();
     this.setupTrackballControls();
-    this.$refs.threeElement.appendChild(this.renderer.domElement);
+    this.$refs.threeElement.appendChild(this.effect.domElement);
+    // document.appendChild(this.effect.domElement);
     this.renderScene();
   },
   methods: {
@@ -54,6 +56,14 @@ export default {
       this.renderer.shadowMapSoft = true;
       this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       
+      this.effect = new AsciiEffect( this.renderer, ' .:-+*=%@#', { invert: true } )
+      this.effect.setSize(window.innerWidth, window.innerHeight)
+      this.effect.domElement.style.color = 'lightgreen';
+      // this.effect.domElement.style.background = 'black';
+      // document.body.appendChild( this.effect.domElement )
+      
+      
+      
 
       window.addEventListener("resize", this.handleWindowResize);
     },
@@ -73,7 +83,7 @@ export default {
       const planeMaterial = new THREE.MeshLambertMaterial({ color: 0xaaaaaa });
       this.plane = new THREE.Mesh(planeGeometry, planeMaterial);
       this.plane.rotation.x = -0.5 * Math.PI;
-      this.plane.position.set(15, 0, 0);
+      this.plane.position.set(-5, 0, 0);
       this.plane.receiveShadow = true;
 
       // create cube geometry and material
@@ -138,7 +148,7 @@ export default {
     setupTrackballControls() {
       this.trackballControls = new THREE.TrackballControls(
         this.camera,
-        this.renderer.domElement
+        this.effect.domElement
       );
       this.trackballControls.rotateSpeed = 1.0;
       this.trackballControls.zoomSpeed = 1.2;
@@ -163,7 +173,7 @@ export default {
       this.updateGeometryPosition(this.sphere, positionArray);
 
       window.RAF = requestAnimationFrame(this.renderScene);
-      this.renderer.render(this.scene, this.camera);
+      this.effect.render(this.scene, this.camera);
     },
     
   }
